@@ -3,7 +3,7 @@ import { HttpError } from '../utils/HttpError'; // Assuming you have a custom Ht
 
 const prisma = new PrismaClient();
 
-export const createClient = async (data: { name: string; contactInfo?: string }, userId: string): Promise<Client> => {
+export const createClient = async (data: { name: string; email?: string; phone?: string }, userId: string): Promise<Client> => {
     return prisma.client.create({
         data: {
             ...data,
@@ -38,7 +38,7 @@ export const getClientById = async (id: string, userId: string): Promise<Client>
     return client;
 };
 
-export const updateClient = async (id: string, data: { name?: string; contactInfo?: string }, userId: string): Promise<Client> => {
+export const updateClient = async (id: string, data: { name?: string; email?: string | null; phone?: string | null }, userId: string): Promise<Client> => {
     // First, verify ownership and existence
     await getClientById(id, userId); // This will throw if not found or not owned
 
