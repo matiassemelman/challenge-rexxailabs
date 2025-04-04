@@ -16,3 +16,10 @@ export const createUser = async (userData: Omit<RegisterInput, 'password'> & { p
         data: userData,
     });
 };
+
+// Service to find a user by their ID
+export const findUserById = async (id: string) => {
+    return await prisma.user.findUnique({
+        where: { id },
+    });
+};
