@@ -24,3 +24,6 @@ ehthumbs.db
 Thumbs.db
 *.md
 !README.md
+
+# Cursor IDE
+.cursor/
