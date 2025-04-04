@@ -9,7 +9,7 @@ export const register = async (input: RegisterInput) => {
     // Check if user already exists
     const existingUser = await userService.findUserByEmail(input.email);
     if (existingUser) {
-        throw new Error('User with this email already exists'); // Consider a more specific error type
+        throw new Error('User with this email already exists');
     }
 
     // Hash the password
