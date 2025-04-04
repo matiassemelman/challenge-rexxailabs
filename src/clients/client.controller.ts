@@ -1,71 +1,99 @@
 import { Request, Response, NextFunction } from 'express';
-import * as ClientService from './client.service';
-import { HttpError } from '../utils/HttpError'; // Import the custom error class
+import * as clientService from './client.service';
+import { HttpError } from '../utils/HttpError'; // Assuming HttpError utility
 
-export const handleCreateClient = async (req: Request, res: Response, next: NextFunction) => {
+// Extend Express Request type to include user property
+interface AuthenticatedRequest extends Request {
+    user?: { id: string }; // Assuming auth middleware adds user object with id
+}
+
+/**
+ * POST /clients
+ * Create a new client.
+ */
+export const createClientHandler = async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
     try {
-        // User ID should be attached by authMiddleware
-        if (!req.user?.id) {
-            throw new HttpError('Unauthorized', 401);
+        const userId = req.user?.id;
+        if (!userId) {
+            // This should technically be handled by authMiddleware, but belts and suspenders
+            throw new HttpError('Authentication required', 401);
         }
-        const clientData = req.body; // Already validated by validationMiddleware
-        const newClient = await ClientService.createClient(clientData, req.user.id);
+        // Data expected to be validated by middleware using createClientSchema
+        const clientData = req.body;
+        const newClient = await clientService.createClient(clientData, userId);
         res.status(201).json(newClient);
     } catch (error) {
-        next(error); // Pass error to the global error handler
+        next(error); // Pass error to global error handler
     }
 };
 
-export const handleGetMyClients = async (req: Request, res: Response, next: NextFunction) => {
+/**
+ * GET /clients
+ * Get all clients for the authenticated user.
+ */
+export const getAllClientsHandler = async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
     try {
-        if (!req.user?.id) {
-            throw new HttpError('Unauthorized', 401);
+        const userId = req.user?.id;
+        if (!userId) {
+            throw new HttpError('Authentication required', 401);
         }
-        const clients = await ClientService.getClientsByUser(req.user.id);
+        const clients = await clientService.getClientsByUser(userId);
         res.status(200).json(clients);
     } catch (error) {
         next(error);
     }
 };
 
-export const handleGetClientById = async (req: Request, res: Response, next: NextFunction) => {
+/**
+ * GET /clients/:id
+ * Get a specific client by ID.
+ */
+export const getClientByIdHandler = async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
     try {
-        if (!req.user?.id) {
-            throw new HttpError('Unauthorized', 401);
+        const userId = req.user?.id;
+        const clientId = req.params.id; // Assumes validated by middleware (clientIdSchema)
+        if (!userId) {
+            throw new HttpError('Authentication required', 401);
         }
-        const { id } = req.params;
-        const client = await ClientService.getClientById(id, req.user.id);
+        const client = await clientService.getClientById(clientId, userId);
         res.status(200).json(client);
     } catch (error) {
-        // The service throws HttpError with 404 if not found or not owned
         next(error);
     }
 };
 
-export const handleUpdateClient = async (req: Request, res: Response, next: NextFunction) => {
+/**
+ * PUT /clients/:id
+ * Update a specific client by ID.
+ */
+export const updateClientHandler = async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
     try {
-        if (!req.user?.id) {
-            throw new HttpError('Unauthorized', 401);
+        const userId = req.user?.id;
+        const clientId = req.params.id; // Assumes validated
+        const updateData = req.body; // Assumes validated by middleware (updateClientSchema)
+        if (!userId) {
+            throw new HttpError('Authentication required', 401);
         }
-        const { id } = req.params;
-        const updateData = req.body; // Already validated
-        const updatedClient = await ClientService.updateClient(id, updateData, req.user.id);
+        const updatedClient = await clientService.updateClient(clientId, updateData, userId);
         res.status(200).json(updatedClient);
     } catch (error) {
         next(error);
     }
 };
 
-export const handleDeleteClient = async (req: Request, res: Response, next: NextFunction) => {
+/**
+ * DELETE /clients/:id
+ * Delete a specific client by ID.
+ */
+export const deleteClientHandler = async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
     try {
-        if (!req.user?.id) {
-            throw new HttpError('Unauthorized', 401);
+        const userId = req.user?.id;
+        const clientId = req.params.id; // Assumes validated
+        if (!userId) {
+            throw new HttpError('Authentication required', 401);
         }
-        const { id } = req.params;
-        const deletedClient = await ClientService.deleteClient(id, req.user.id);
-        // Respond with the deleted client data or just a success status
-        // res.status(200).json(deletedClient);
-        res.status(204).send(); // 204 No Content is often preferred for DELETE
+        await clientService.deleteClient(clientId, userId);
+        res.status(204).send(); // No content on successful deletion
     } catch (error) {
         next(error);
     }
