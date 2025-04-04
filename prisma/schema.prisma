@@ -1,15 +1,8 @@
 // This is your Prisma schema file,
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
-  // The output needs to be adjusted based on the actual project structure if different
-  // For a typical structure where prisma is in the root and src contains the code:
-  // output   = "../node_modules/.prisma/client"
-  // If prisma is inside src, it might just be:
 }
 
 datasource db {
@@ -29,7 +22,8 @@ model User {
 model Client {
   id           String    @id @default(uuid())
   name         String
-  contactInfo  String?
+  email        String?
+  phone        String?
   createdAt    DateTime  @default(now())
   updatedAt    DateTime  @updatedAt
   userId       String    // Foreign Key to User
@@ -50,6 +44,8 @@ model Project {
   name        String
   description String?
   status      ProjectStatus @default(PENDING)
+  startDate   DateTime?
+  deliveryDate DateTime?
   createdAt   DateTime      @default(now())
   updatedAt   DateTime      @updatedAt
   clientId    String        // Foreign Key to Client
