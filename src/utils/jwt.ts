@@ -12,7 +12,6 @@ if (!JWT_SECRET) {
 
 interface JwtPayload {
     userId: string;
-    // Add other properties if you include them in the token
 }
 
 export const signToken = (payload: JwtPayload, expiresIn: string | number = '1h'): string => {
