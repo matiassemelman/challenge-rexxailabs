@@ -1,32 +1,44 @@
 import { Router } from 'express';
-import * as ClientController from './client.controller';
-import { authMiddleware } from '../middleware/auth.middleware'; // Assuming this path is correct
-import { validate } from '../middleware/validation.middleware'; // Assuming this path is correct
-import { createClientSchema, updateClientSchema } from './client.validation';
-import { asyncHandler } from '../utils/asyncHandler'; // Import asyncHandler
+import * as clientController from './client.controller';
+import { authMiddleware } from '../middleware/auth.middleware';
+import { validate } from '../middleware/validation.middleware';
+import { createClientSchema, updateClientSchema, getOrDeleteClientSchema } from './client.validation';
+import { asyncHandler } from '../utils/asyncHandler';
 
 const router = Router();
 
 // Apply auth middleware to all client routes
 router.use(authMiddleware);
 
-// Define routes, wrapping controllers with asyncHandler
+// POST /clients - Create a new client
 router.post(
     '/',
-    validate(createClientSchema), // Validate body first
-    asyncHandler(ClientController.handleCreateClient) // Wrap with asyncHandler
+    validate(createClientSchema),
+    asyncHandler(clientController.createClientHandler)
 );
 
-router.get('/', asyncHandler(ClientController.handleGetMyClients)); // Wrap with asyncHandler
+// GET /clients - Get all clients for the authenticated user
+router.get('/', asyncHandler(clientController.getAllClientsHandler));
 
-router.get('/:id', asyncHandler(ClientController.handleGetClientById)); // Wrap with asyncHandler
+// GET /clients/:id - Get a specific client by ID
+router.get(
+    '/:id',
+    validate(getOrDeleteClientSchema),
+    asyncHandler(clientController.getClientByIdHandler)
+);
 
+// PUT /clients/:id - Update a specific client
 router.put(
     '/:id',
-    validate(updateClientSchema), // Validate body first
-    asyncHandler(ClientController.handleUpdateClient) // Wrap with asyncHandler
+    validate(updateClientSchema),
+    asyncHandler(clientController.updateClientHandler)
 );
 
-router.delete('/:id', asyncHandler(ClientController.handleDeleteClient)); // Wrap with asyncHandler
+// DELETE /clients/:id - Delete a specific client
+router.delete(
+    '/:id',
+    validate(getOrDeleteClientSchema),
+    asyncHandler(clientController.deleteClientHandler)
+);
 
 export default router;
