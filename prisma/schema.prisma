@@ -10,7 +10,6 @@ generator client {
   // For a typical structure where prisma is in the root and src contains the code:
   // output   = "../node_modules/.prisma/client"
   // If prisma is inside src, it might just be:
-  output   = "../node_modules/.prisma/client" // Adjusted as per common structure
 }
 
 datasource db {
