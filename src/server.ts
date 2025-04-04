@@ -2,9 +2,8 @@ import express, { Express, Request, Response } from 'express';
 import dotenv from 'dotenv';
 import cors from 'cors';
 import clientRoutes from './clients/client.routes';
-// Import other routes as they are created
 import authRoutes from './auth/auth.routes';
-// import projectRoutes from './projects/project.routes';
+import projectRoutes from './projects/project.routes';
 import { errorMiddleware } from './middleware/error.middleware';
 
 // Load environment variables from .env file
@@ -31,10 +30,8 @@ app.get('/', (req: Request, res: Response) => {
 // Mount client routes
 app.use('/api/v1/clients', clientRoutes);
 
-// Mount other routes here when ready
 app.use('/api/v1/auth', authRoutes);
-// app.use('/api/v1/projects', projectRoutes);
-
+app.use('/api/v1/projects', projectRoutes);
 
 // ---- Error Handling Middleware ----
 // This MUST be the last middleware applied
