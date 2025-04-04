@@ -53,6 +53,6 @@ export const login = async (input: LoginInput) => {
 
     // Return token (and potentially user info without password)
     const { passwordHash: _, ...userWithoutPassword } = user;
-    return { token: `Bearer ${token}`, user: userWithoutPassword };
+    return { token, user: userWithoutPassword };
 
 };
