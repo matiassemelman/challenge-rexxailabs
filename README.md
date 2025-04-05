@@ -122,7 +122,7 @@ All project endpoints require authentication. Include the token in the Authoriza
     "name": "Project Name",
     "description": "Project description",
     "clientId": "client-uuid",
-    "status": "PENDING", // PENDING, IN_PROGRESS, COMPLETED
+    "status": "PENDING", // PENDING, IN_PROGRESS, COMPLETED, CANCELLED
     "startDate": "2023-04-15T12:00:00Z", // Optional
     "deliveryDate": "2023-05-15T12:00:00Z" // Optional
   }
