@@ -13,3 +13,5 @@ services:
         sync: false
       - key: NODE_ENV
         value: production
+      - key: TS_NODE_TRANSPILE_ONLY
+        value: "true"
