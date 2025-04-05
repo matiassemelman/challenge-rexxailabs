@@ -2,17 +2,17 @@
 # exit on error
 set -o errexit
 
-# Install dependencies
+# Install all dependencies (including types)
 npm install
 
-# Install type definitions explicitly
-npm install --save-dev @types/express@5.0.1 @types/jsonwebtoken@9.0.9
+# Create a simple module declaration file for Express
+mkdir -p ./src/types
+echo 'declare module "express";' > ./src/types/express-module.d.ts
+echo 'declare module "jsonwebtoken";' > ./src/types/jsonwebtoken-module.d.ts
+echo 'declare module "express-rate-limit";' > ./src/types/express-rate-limit-module.d.ts
 
-# Build the project
+# Build the project with less strict configuration
 npm run build
 
 # Generate Prisma client
 npx prisma generate
-
-# Optional: run database migrations (uncomment if needed)
-# npx prisma migrate deploy

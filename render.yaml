@@ -2,7 +2,7 @@ services:
   - type: web
     name: rexxailabs-api
     env: node
-    buildCommand: chmod +x ./build.sh && ./build.sh
+    buildCommand: bash ./build.sh
     startCommand: npm start
     envVars:
       - key: DATABASE_URL
