@@ -45,6 +45,26 @@ export const loginHandler = async (
     }
 };
 
+// Controller for user logout
+export const logoutHandler = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+) => {
+    try {
+        // Since JWT is stateless, no server-side action is needed to invalidate the token
+        // The client is responsible for removing the token from storage
+
+        // We still send a success response to acknowledge the request
+        res.status(200).json({
+            status: 'success',
+            message: 'Logout successful'
+        });
+    } catch (error) {
+        next(error);
+    }
+};
+
 // Controller for getting current user information
 export const getMeHandler = async (
     req: Request,

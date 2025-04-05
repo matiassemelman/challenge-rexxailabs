@@ -24,6 +24,7 @@ ehthumbs.db
 Thumbs.db
 *.md
 !README.md
+!API_DOCUMENTATION.md
 
 # Cursor IDE
 .cursor/

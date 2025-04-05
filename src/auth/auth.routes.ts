@@ -1,5 +1,5 @@
 import express from 'express';
-import { registerHandler, loginHandler, getMeHandler } from './auth.controller';
+import { registerHandler, loginHandler, getMeHandler, logoutHandler } from './auth.controller';
 import { validate } from '../middleware/validation.middleware';
 import { registerSchema, loginSchema } from './auth.validation';
 import { asyncHandler } from '../utils/asyncHandler';
@@ -14,6 +14,10 @@ router.post('/register', validate(registerSchema), asyncHandler(registerHandler)
 // Route for user login
 // POST /api/v1/auth/login
 router.post('/login', validate(loginSchema), asyncHandler(loginHandler));
+
+// Route for user logout
+// POST /api/v1/auth/logout
+router.post('/logout', authMiddleware, asyncHandler(logoutHandler));
 
 // Route for getting current user info
 // GET /api/v1/auth/me
