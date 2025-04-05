@@ -72,6 +72,38 @@ The API implements rate limiting to prevent abuse:
 - Global limit: 100 requests per 15-minute window per IP address
 - Stricter limits on authentication endpoints: 20 requests per 30-minute window
 
+## Deploying to Render
+
+### 1. Create a Render account
+
+Sign up for a free account at [Render](https://render.com) if you don't already have one.
+
+### 2. Create a new Web Service
+
+1. From your Render dashboard, click "New" and select "Web Service"
+2. Connect your GitHub repository
+3. Configure the service with the following details:
+   - **Name**: rexxailabs-api (or whatever you prefer)
+   - **Environment**: Node
+   - **Build Command**: `./build.sh`
+   - **Start Command**: `npm start`
+
+### 3. Configure environment variables
+
+In the "Environment" tab of your Render service, add the following variables:
+- `DATABASE_URL`: Your Supabase PostgreSQL connection string
+- `JWT_SECRET`: Your JWT secret key
+- `FRONTEND_URL`: The URL of your frontend application
+- `NODE_ENV`: Set to `production`
+
+### 4. Deploy
+
+Click "Create Web Service" to deploy your application. Render will automatically build and deploy your API.
+
+### 5. Verify the deployment
+
+Once deployment is complete, click on the generated URL to verify that your API is running. You should see the message: "Rexxailabs Challenge API is running!"
+
 ## API Endpoints
 
 ### Authentication
