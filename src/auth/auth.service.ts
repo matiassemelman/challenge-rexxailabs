@@ -7,16 +7,10 @@ import { HttpError } from '../utils/HttpError';
 
 /**
  * Authentication service with user registration and login functionality
- * @module AuthService
  */
 
 /**
  * Registers a new user in the system
- *
- * @async
- * @param {RegisterInput} input - User registration data (email and password)
- * @returns {Promise<object>} User object without password hash
- * @throws {HttpError} If user already exists or registration fails
  */
 export const register = async (input: RegisterInput) => {
     // Check if user already exists
@@ -49,11 +43,6 @@ export const register = async (input: RegisterInput) => {
 
 /**
  * Authenticates a user and generates a JWT token
- *
- * @async
- * @param {LoginInput} input - User login credentials (email and password)
- * @returns {Promise<{token: string, user: object}>} JWT token and user information
- * @throws {HttpError} If credentials are invalid or authentication fails
  */
 export const login = async (input: LoginInput) => {
     // Find user by email

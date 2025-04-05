@@ -8,9 +8,7 @@ type AsyncRequestHandler = (
 ) => Promise<any>;
 
 /**
- * Wraps an async route handler to catch errors and pass them to the Express error handling middleware.
- * @param fn The async route handler function.
- * @returns An Express RequestHandler.
+ * Wraps an async route handler to catch errors and pass them to the Express error handling middleware
  */
 export const asyncHandler = (fn: AsyncRequestHandler): RequestHandler =>
     (req, res, next) => {

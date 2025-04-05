@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import * as projectService from './project.service';
 import { HttpError } from '../utils/HttpError';
-import { ProjectStatus } from '@prisma/client'; // Import status enum
+import { ProjectStatus } from '@prisma/client';
 
 // Extend Express Request type to include user property
 interface AuthenticatedRequest extends Request {
@@ -18,7 +18,6 @@ export const createProjectHandler = async (req: AuthenticatedRequest, res: Respo
         if (!userId) {
             throw new HttpError('Authentication required', 401);
         }
-        // Data validated by middleware (createProjectSchema)
         const projectData = req.body;
         const newProject = await projectService.createProject(projectData, userId);
         res.status(201).json(newProject);
@@ -38,16 +37,13 @@ export const getAllProjectsHandler = async (req: AuthenticatedRequest, res: Resp
             throw new HttpError('Authentication required', 401);
         }
 
-        // Extract and validate query parameters (ideally using projectFilterSchema with middleware)
         const { clientId, status } = req.query;
         const filters: { clientId?: string; status?: ProjectStatus } = {};
 
         if (clientId && typeof clientId === 'string') {
-            // Basic validation, better handled by Zod middleware
             filters.clientId = clientId;
         }
         if (status && typeof status === 'string' && status in ProjectStatus) {
-             // Basic validation, better handled by Zod middleware
             filters.status = status as ProjectStatus;
         }
 
@@ -65,7 +61,7 @@ export const getAllProjectsHandler = async (req: AuthenticatedRequest, res: Resp
 export const getProjectByIdHandler = async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
     try {
         const userId = req.user?.id;
-        const projectId = req.params.id; // Assumes validated (projectIdSchema)
+        const projectId = req.params.id;
         if (!userId) {
             throw new HttpError('Authentication required', 401);
         }
@@ -83,8 +79,8 @@ export const getProjectByIdHandler = async (req: AuthenticatedRequest, res: Resp
 export const updateProjectHandler = async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
     try {
         const userId = req.user?.id;
-        const projectId = req.params.id; // Assumes validated
-        const updateData = req.body; // Assumes validated (updateProjectSchema)
+        const projectId = req.params.id;
+        const updateData = req.body;
         if (!userId) {
             throw new HttpError('Authentication required', 401);
         }
@@ -102,7 +98,7 @@ export const updateProjectHandler = async (req: AuthenticatedRequest, res: Respo
 export const deleteProjectHandler = async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
     try {
         const userId = req.user?.id;
-        const projectId = req.params.id; // Assumes validated
+        const projectId = req.params.id;
         if (!userId) {
             throw new HttpError('Authentication required', 401);
         }

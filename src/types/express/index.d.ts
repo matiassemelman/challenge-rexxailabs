@@ -3,12 +3,11 @@ declare global {
         interface Request {
             user?: {
                 id: string;
-                // You could add other user properties here if needed from the JWT payload
+                // Additional user properties can be added here
             };
         }
     }
 }
 
-// This export is needed to make the file a module and ensure the declaration merging works.
-// It doesn't actually export anything, but it satisfies TypeScript's module requirement.
+// This export is needed to make the file a module
 export { };

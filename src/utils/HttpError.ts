@@ -6,9 +6,9 @@ export class HttpError extends Error {
         super(message);
         this.statusCode = statusCode;
         this.details = details;
-        this.name = 'HttpError'; // Optional: Set the error name
+        this.name = 'HttpError';
 
-        // Maintains proper stack trace for where our error was thrown (only available on V8)
+        // Maintains proper stack trace
         if (Error.captureStackTrace) {
             Error.captureStackTrace(this, HttpError);
         }

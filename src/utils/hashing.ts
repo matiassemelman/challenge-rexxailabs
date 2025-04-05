@@ -2,7 +2,7 @@ import bcrypt from 'bcryptjs';
 
 // Function to hash a password
 export const hashPassword = async (password: string): Promise<string> => {
-  const saltRounds = 10; // Adjust cost factor as needed
+  const saltRounds = 10; // Cost factor for bcrypt hashing
   return await bcrypt.hash(password, saltRounds);
 };
 

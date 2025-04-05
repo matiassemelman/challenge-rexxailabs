@@ -3,7 +3,6 @@ import dotenv from 'dotenv';
 
 /**
  * JWT utility functions for token generation and verification
- * @module JwtUtils
  */
 
 dotenv.config(); // Load environment variables
@@ -18,7 +17,6 @@ if (!JWT_SECRET) {
 
 /**
  * JWT payload structure
- * @interface JwtPayload
  */
 interface JwtPayload {
     /** User identifier from database */
