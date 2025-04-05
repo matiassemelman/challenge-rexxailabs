@@ -10,6 +10,7 @@ Backend API for managing clients and projects with secure authentication.
 - **ORM**: Prisma
 - **Authentication**: JWT
 - **Validation**: Zod
+- **Security**: Rate limiting, CORS protection
 
 ## Setup Instructions
 
@@ -38,6 +39,7 @@ Edit the `.env` file and set the following variables:
 
 - `DATABASE_URL`: Your Supabase PostgreSQL connection string
 - `JWT_SECRET`: A strong secret key for JWT token generation (use a randomly generated string)
+- `FRONTEND_URL`: URL of your frontend application (for CORS configuration)
 
 ### 4. Database setup
 
@@ -54,6 +56,21 @@ npm run dev
 ```
 
 The API will be available at: http://localhost:3000
+
+## Security Features
+
+### CORS Protection
+
+The API implements a secure CORS policy that:
+- Only allows requests from whitelisted origins (localhost development servers by default)
+- Can be configured via the FRONTEND_URL environment variable
+- Allows credentials to be included in cross-origin requests
+
+### Rate Limiting
+
+The API implements rate limiting to prevent abuse:
+- Global limit: 100 requests per 15-minute window per IP address
+- Stricter limits on authentication endpoints: 20 requests per 30-minute window
 
 ## API Endpoints
 
